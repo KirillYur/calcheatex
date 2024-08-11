@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расчет пластинчатого теплообменника</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    {% load static %}
+</head>
+<body>
+    
+    <form name = 'calcheatex'>
+        <h1 class = "form_title">Нахождение температуропроводности и парциального давления</h1>
+        {% csrf_token %}
+            <p>Введите теплопроводность:</p>
+            <input name="thermConductivity" type="text" class = "form_input" value="0">
+            <p>Введите плотность вещества:</p>
+            <input name="substanceDensity" type="text" class = "form_input" value="0">
+            <p>Введите теплоемкость:</p>
+            <input name="heatCapacity" type="text" class = "form_input" value="0">
+            <p>Введите температуру на входе:</p>
+            <input name="inputTemperature" type="text" class = "form_input" value="0">
+
+        <button class = 'calcheatexBtn' type = 'submit' name = 'calcheatexBtn'>Рассчитать</button>
+        <table class = 'form_table' id = 'form_table'>
+            <tr>
+                <td>
+                    <h3 id ='resultThermDiffusivity'></h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3 id ='resultPartialPressure'></h3>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!-- <div id="table-container"></div> -->
+    <script>
+        // function createTable(resultObjParse) {
+        // let tableContainer = document.getElementById('table-container');
+        // let table = document.createElement('table');
+
+        // // Создание заголовков таблицы
+        // let headerRow = table.insertRow();
+        // for (let key in resultObjParse[0]) {
+        //     let headerCell = headerRow.insertCell();
+        //     headerCell.textContent = key;
+        // }
+
+        // Создание строк и ячеек таблицы
+        // resultObjParse.forEach(item => {
+        // let row = table.insertRow();
+        // for (let key in item) {
+        //     let cell = row.insertCell();
+        //     cell.textContent = item[key];
+        //     }
+        // });
+        // tableContainer.appendChild(table);
+        // // Вызов функции для создания таблицы после получения данных 
+        // }
+        document.forms.calcheatex.onsubmit = function(event){
+            event.preventDefault();
+            
+            var csrf_token = document.forms.calcheatex.csrfmiddlewaretoken.value;
+            var userThermConductivity = document.forms.calcheatex.thermConductivity.value;
+            var userSubstanceDensity = document.forms.calcheatex.substanceDensity.value;
+            var userHeatCapacity = document.forms.calcheatex.heatCapacity.value;
+            var userInputTemperature = document.forms.calcheatex.inputTemperature.value;
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/calculation');
+
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function(){
+                
+                
+                if(xhr.readyState === 4 && xhr.status === 200){
+                    
+                    var resultThermDiffusivity = document.querySelector('#resultThermDiffusivity');
+                    var resultPartialPressure = document.querySelector('#resultPartialPressure');
+                    var resultObjParse = JSON.parse(xhr.responseText);
+                    
+                    resultThermDiffusivity.textContent = 'Температуропроводность = ' 
+                    + resultObjParse.resultThermDiffusivity;
+
+                    resultPartialPressure.textContent = 'Парциальное давление = ' 
+                    + resultObjParse.resultPartialPressure;
+
+                    if (resultObjParse) {
+                    document.getElementById("form_table").style.display = "table"; // Отобразить таблицу
+                    } else {
+                    document.getElementById("form_table").style.display = "none"; // Скрыть таблицу
+                    }
+                }
+            }
+            
+            var body = 'thermConductivity=' + encodeURIComponent(userThermConductivity) +
+                '&substanceDensity=' + encodeURIComponent(userSubstanceDensity)+
+                '&heatCapacity=' + encodeURIComponent(userHeatCapacity)+
+                '&inputTemperature=' + encodeURIComponent(userInputTemperature)+
+                '&csrfmiddlewaretoken=' + encodeURIComponent(csrf_token);
+
+            xhr.send(body);
+            // createTable(resultObjParse);
+        }
+    </script>
+</body>
+</html>
