@@ -2,31 +2,38 @@ body{
 	display:flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: row;
 	height: 50vh;
 	background-image: url("bg.jpg");
-	background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)),
-    url(bg.jpg);
+	background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(bg.jpg);
+}
+.mainPageCalc{
+	display: flex;
+	flex-direction: row;
 }
 .form_title{
+	display: flex;
 	text-align: center;
-	margin: 350px 10px 42px 10px;
+	justify-content: center;
+	margin: 150px 10px 42px 10px;
 	font-weight: bold;
 	font: 30px "Fira Sans", sans-serif;
 }
-/* .form_group{
-	position: relative;
-	margin-bottom: 10px;
-} */
+.inputMainArea{
+	display: flex;
+  	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
 .form_table{
-	display: none;
+	display: flex;
+  	flex-direction: row;
   	width: 100%;
-	/* border: 6px solid #180606; */
-	/* border-collapse: collapse; */
-	/* border-radius: 8px; */
+	justify-content: center;
 	border-collapse: collapse;
     border-radius: 20px;
-    border-style: hidden; /* hide standard table (collapsed) border */
-    box-shadow: 0 0 7px 4px #186b1f;
+    border-style: hidden;
+    box-shadow: 0 0 8px 4px #186b1f;
 }
 .form_label{
 	position: absolute;
@@ -37,20 +44,15 @@ body{
 }
 .form_input {
 	display: flex;
-	text-align: right;
-	width: 100px;
+	flex-direction: row;
+	width: 260px;
 	padding: 10px;
-	border: 2px solid silver;
+	border: 2px solid rgb(163, 163, 163);
 	margin-bottom: 10px;
 	border-radius: 8px;
-	/* border-bottom: 2px solid olive; */
-	/* outline: 1px solid rgb(88, 88, 88); */
 	transition: 0.3s;
 }
 .calcheatexBtn {
 	margin-bottom: 16px;
 }
-td {
-	padding: 10px;
-	padding-left: 20px;
-}
+

@@ -9,17 +9,23 @@ def index(request):
 
 def calc(request):
 
-        thermConductivity = float(request.POST.get('thermConductivity', 0))
-        substanceDensity = float(request.POST.get('substanceDensity', 0))
-        heatCapacity = float(request.POST.get('heatCapacity', 0))
-        inputTemperature = float(request.POST.get('inputTemperature', 0))
+        tempHotIn = float(request.POST.get('tempHotIn', 0))
+        tempHotOut = float(request.POST.get('tempHotOut', 0))
+        flowHot = float(request.POST.get('flowHot', 0))
+        pressureHot = float(request.POST.get('pressureHot', 0))
 
-        resultThermDiffusivity = calcThermDiffusivity(thermConductivity, substanceDensity, heatCapacity)
+        tempColdIn = float(request.POST.get('tempColdIn', 0))
+        tempColdOut = float(request.POST.get('tempColdOut', 0))
+        flowCold = float(request.POST.get('flowCold', 0))
+        pressureCold = float(request.POST.get('pressureCold', 0))
 
-        resultPartialPressure = calcPartialPressure(inputTemperature)
+        resultDensityHotCoolant = calcCoolantProperty(tempHotIn, tempHotOut, pressureHot, tempColdIn, tempColdOut, pressureCold)
 
-        return JsonResponse({'resultThermDiffusivity' : resultThermDiffusivity,
-                              'resultPartialPressure' : resultPartialPressure})
+        # resultPartialPressure = calcPartialPressure(inputTemperature)
+
+        return JsonResponse({'resultDensityHotCoolant' : resultDensityHotCoolant,
+                        #       'resultPartialPressure' : resultPartialPressure
+                        })
 
 def types(request, types_id):
         return HttpResponse ("Теплообменники по типам")

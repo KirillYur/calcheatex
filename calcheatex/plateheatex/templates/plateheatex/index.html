@@ -8,33 +8,58 @@
     {% load static %}
 </head>
 <body>
-    
-    <form name = 'calcheatex'>
-        <h1 class = "form_title">Нахождение температуропроводности и парциального давления</h1>
-        {% csrf_token %}
-            <p class = "test">Введите теплопроводность:</p>
-            <input name="thermConductivity" type="text" class = "form_input" value="0">
-            <p>Введите плотность вещества:</p>
-            <input name="substanceDensity" type="text" class = "form_input" value="0">
-            <p>Введите теплоемкость:</p>
-            <input name="heatCapacity" type="text" class = "form_input" value="0">
-            <p>Введите температуру на входе:</p>
-            <input name="inputTemperature" type="text" class = "form_input" value="0">
-
-        <button class = 'calcheatexBtn' type = 'submit' name = 'calcheatexBtn'>Рассчитать</button>
-        <table class = 'form_table' id = 'form_table'>
-            <tr>
-                <td>
-                    <h3 id ='resultThermDiffusivity'></h3>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h3 id ='resultPartialPressure'></h3>
-                </td>
-            </tr>
-        </table>
-    </form>
+    <div class="mainPageCalc">
+        <form name = 'calcheatex'>
+            <h1 class = "form_title">Расчет пластинчатого теплообменника</h1>
+            {% csrf_token %}
+            <div class="inputMainArea">
+                <div class = 'inputHotArea'>
+                    <span>Горячий теплоноситель</span>
+                    <p><input name="tempHotIn" type="text" class="form_input" placeholder="t1 на входе, °C"></p>
+                    <p><input name="tempHotOut" type="text" class="form_input" placeholder="t1 на выходе, °C"></p>
+                    <p><input name="flowHot" type="text" class="form_input" placeholder="Расход горячего теплоносителя, м3/ч"></p>
+                    <p><input name="pressureHot" type="text" class="form_input" placeholder="Давление горячего теплоносителя, бар"></p>
+                    <p>
+                        <select name="selectTypeHotCoolant" >
+                            <option value="wetAir">
+                                Влажный воздух
+                            </option>
+                        </select>
+                    </p>
+                </div>
+                <div class="inputAreaCenter">
+                    <img src="static/teplo_calc_center.jpg" alt="" width="240" height="200">
+                </div>
+                <div class='inputColdArea'>
+                    <span>Холодный теплоноситель</span>
+                    <p><input name="tempColdIn" type="text" class="form_input" placeholder="t2 на входе, °C"></p>
+                    <p><input name="tempColdOut" type="text" class="form_input" placeholder="t2 на выходе, °C"></p>
+                    <p><input name="flowCold" type="text" class="form_input" placeholder="Расход холодного теплоносителя, м3/ч"></p>
+                    <p><input name="pressureCold" type="text" class="form_input" placeholder="Давление холодного теплоносителя, бар"></p>
+                    <p>
+                        <select name="selectTypeColdCoolant" id="">
+                            <option value="dryAir">
+                                Сухой воздух
+                            </option>
+                        </select>
+                    </p>
+                </div>
+            </div>
+            <p><button class='calcheatexBtn' type='submit' name='calcheatexBtn'>Рассчитать</button></p>
+            <table class='form_table' id='form_table'>
+                <tr>
+                    <td>
+                        <h3 id ='resultDensityHotCoolant'></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3 id ='resultPartialPressure'></h3>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
     <!-- <div id="table-container"></div> -->
     <script>
         // function createTable(resultObjParse) {
@@ -63,10 +88,24 @@
             event.preventDefault();
             
             var csrf_token = document.forms.calcheatex.csrfmiddlewaretoken.value;
-            var userThermConductivity = document.forms.calcheatex.thermConductivity.value;
-            var userSubstanceDensity = document.forms.calcheatex.substanceDensity.value;
-            var userHeatCapacity = document.forms.calcheatex.heatCapacity.value;
-            var userInputTemperature = document.forms.calcheatex.inputTemperature.value;
+
+            // var userThermConductivity = document.forms.calcheatex.thermConductivity.value;
+            // var userSubstanceDensity = document.forms.calcheatex.substanceDensity.value;
+            // var userHeatCapacity = document.forms.calcheatex.heatCapacity.value;
+            // var userInputTemperature = document.forms.calcheatex.inputTemperature.value;
+            var userTempHotIn = document.forms.calcheatex.tempHotIn.value;
+            var userTempHotOut = document.forms.calcheatex.tempHotOut.value;
+            var userFlowHot = document.forms.calcheatex.flowHot.value;
+            var userPressureHot = document.forms.calcheatex.pressureHot.value;
+
+            var userTempColdIn = document.forms.calcheatex.tempColdIn.value;
+            var userTempColdOut = document.forms.calcheatex.tempColdOut.value;
+            var userFlowCold = document.forms.calcheatex.flowCold.value;
+            var userPressureCold = document.forms.calcheatex.pressureCold.value;
+
+            var userWetAir = document.forms.calcheatex.wetAir;
+            var userDryAir = document.forms.calcheatex.dryAir;
+
             var xhr = new XMLHttpRequest();
 
             xhr.open('POST', '/calculation');
@@ -78,15 +117,19 @@
                 
                 if(xhr.readyState === 4 && xhr.status === 200){
                     
-                    var resultThermDiffusivity = document.querySelector('#resultThermDiffusivity');
-                    var resultPartialPressure = document.querySelector('#resultPartialPressure');
+                    // var resultThermDiffusivity = document.querySelector('#resultThermDiffusivity');
+                    // var resultPartialPressure = document.querySelector('#resultPartialPressure');
+                    var resultDensityHotCoolant = document.querySelector('#resultDensityHotCoolant');
                     var resultObjParse = JSON.parse(xhr.responseText);
                     
-                    resultThermDiffusivity.textContent = 'Температуропроводность = ' 
-                    + resultObjParse.resultThermDiffusivity;
+                    resultDensityHotCoolant.textContent = 'Плотность горячего теплоносителя = ' 
+                    + resultObjParse.resultDensityHotCoolant;
 
-                    resultPartialPressure.textContent = 'Парциальное давление = ' 
-                    + resultObjParse.resultPartialPressure;
+                    // resultThermDiffusivity.textContent = 'Температуропроводность = ' 
+                    // + resultObjParse.resultThermDiffusivity;
+
+                    // resultPartialPressure.textContent = 'Парциальное давление = ' 
+                    // + resultObjParse.resultPartialPressure;
 
                     if (resultObjParse) {
                     document.getElementById("form_table").style.display = "table"; // Отобразить таблицу
@@ -96,10 +139,24 @@
                 }
             }
             
-            var body = 'thermConductivity=' + encodeURIComponent(userThermConductivity) +
-                '&substanceDensity=' + encodeURIComponent(userSubstanceDensity)+
-                '&heatCapacity=' + encodeURIComponent(userHeatCapacity)+
-                '&inputTemperature=' + encodeURIComponent(userInputTemperature)+
+            var body = 
+                // 'thermConductivity=' + encodeURIComponent(userThermConductivity) +
+                // '&substanceDensity=' + encodeURIComponent(userSubstanceDensity)+
+                // '&heatCapacity=' + encodeURIComponent(userHeatCapacity)+
+                // '&inputTemperature=' + encodeURIComponent(userInputTemperature)+
+                '&tempHotIn=' + encodeURIComponent(userTempHotIn) +
+                '&tempHotOut=' + encodeURIComponent(userTempHotOut)+
+                '&flowHot=' + encodeURIComponent(userFlowHot)+
+                '&pressureHot=' + encodeURIComponent(userPressureHot)+
+
+                '&tempColdIn=' + encodeURIComponent(userTempColdIn) +
+                '&tempColdOut=' + encodeURIComponent(userTempColdOut)+
+                '&flowCold=' + encodeURIComponent(userFlowCold)+
+                '&pressureCold=' + encodeURIComponent(userPressureCold)+
+
+                '&wetAir=' + encodeURIComponent(userWetAir)+
+                '&dryAir=' + encodeURIComponent(userDryAir)+
+
                 '&csrfmiddlewaretoken=' + encodeURIComponent(csrf_token);
 
             xhr.send(body);
