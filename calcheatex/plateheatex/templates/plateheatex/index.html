@@ -14,15 +14,17 @@
             {% csrf_token %}
             <div class="inputMainArea">
                 <div class = 'inputHotArea'>
-                    <span>Горячий теплоноситель</span>
+                    <span class="spanHotCoolant">Горячий теплоноситель</span>
                     <p><input name="tempHotIn" type="text" class="form_input" placeholder="t1 на входе, °C"></p>
                     <p><input name="tempHotOut" type="text" class="form_input" placeholder="t1 на выходе, °C"></p>
                     <p><input name="flowHot" type="text" class="form_input" placeholder="Расход горячего теплоносителя, м3/ч"></p>
                     <p><input name="pressureHot" type="text" class="form_input" placeholder="Давление горячего теплоносителя, бар"></p>
                     <p>
-                        <select name="selectTypeHotCoolant" >
+                        <select name="selectTypeHotCoolant" class="selectTypeHotCoolant" >
                             <option value="wetAir">
-                                Влажный воздух
+                                <script>
+                                    //Подумать как сделать обращение к св-вам
+                                </script>
                             </option>
                         </select>
                     </p>
@@ -31,13 +33,13 @@
                     <img src="static/teplo_calc_center.jpg" alt="" width="240" height="200">
                 </div>
                 <div class='inputColdArea'>
-                    <span>Холодный теплоноситель</span>
+                    <span class="spanColdCoolant">Холодный теплоноситель</span>
                     <p><input name="tempColdIn" type="text" class="form_input" placeholder="t2 на входе, °C"></p>
                     <p><input name="tempColdOut" type="text" class="form_input" placeholder="t2 на выходе, °C"></p>
                     <p><input name="flowCold" type="text" class="form_input" placeholder="Расход холодного теплоносителя, м3/ч"></p>
                     <p><input name="pressureCold" type="text" class="form_input" placeholder="Давление холодного теплоносителя, бар"></p>
                     <p>
-                        <select name="selectTypeColdCoolant" id="">
+                        <select name="selectTypeColdCoolant" class="selectTypeColdCoolant">
                             <option value="dryAir">
                                 Сухой воздух
                             </option>
@@ -46,16 +48,16 @@
                 </div>
             </div>
             <p><button class='calcheatexBtn' type='submit' name='calcheatexBtn'>Рассчитать</button></p>
-            <table class='form_table' id='form_table'>
+            <table class='form_table' id="form_table">
                 <tr>
                     <td>
                         <h3 id ='resultDensityHotCoolant'></h3>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <!-- <td>
                         <h3 id ='resultPartialPressure'></h3>
-                    </td>
+                    </td> -->
                 </tr>
             </table>
         </form>
@@ -130,7 +132,7 @@
 
                     // resultPartialPressure.textContent = 'Парциальное давление = ' 
                     // + resultObjParse.resultPartialPressure;
-
+                
                     if (resultObjParse) {
                     document.getElementById("form_table").style.display = "table"; // Отобразить таблицу
                     } else {
