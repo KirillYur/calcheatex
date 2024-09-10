@@ -21,11 +21,11 @@
                     <p><input name="pressureHot" type="text" class="form_input" placeholder="Давление горячего теплоносителя, бар"></p>
                     <p>
                         <select name="selectTypeHotCoolant" class="selectTypeHotCoolant" >
-                            <option value="wetAir">
-                                <script>
-                                    //Подумать как сделать обращение к св-вам
-                                </script>
-                            </option>
+                            <option value="Water">Вода</option>
+                            <option value="Air">Воздух</option>
+                            <!-- <option value="wetAir">Влажный воздух</option> -->
+                            <option value="Ethylene">Этилен</option>
+                            <option value="Propylene">Пропилен</option>
                         </select>
                     </p>
                 </div>
@@ -40,9 +40,11 @@
                     <p><input name="pressureCold" type="text" class="form_input" placeholder="Давление холодного теплоносителя, бар"></p>
                     <p>
                         <select name="selectTypeColdCoolant" class="selectTypeColdCoolant">
-                            <option value="dryAir">
-                                Сухой воздух
-                            </option>
+                            <option value="Water">Вода</option>
+                            <option value="Air">Воздух</option>
+                            <option value="wetAir">Влажный воздух</option>
+                            <option value="Ethylene">Этилен</option>
+                            <option value="Propylene">Пропилен</option>
                         </select>
                     </p>
                 </div>
@@ -105,8 +107,8 @@
             var userFlowCold = document.forms.calcheatex.flowCold.value;
             var userPressureCold = document.forms.calcheatex.pressureCold.value;
 
-            var userWetAir = document.forms.calcheatex.wetAir;
-            var userDryAir = document.forms.calcheatex.dryAir;
+            var userSelectTypeColdCoolant = document.forms.calcheatex.selectTypeColdCoolant.value;//проверка
+            //var userDryAir = document.forms.calcheatex.dryAir;
 
             var xhr = new XMLHttpRequest();
 
@@ -115,7 +117,6 @@
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
             xhr.onreadystatechange = function(){
-                
                 
                 if(xhr.readyState === 4 && xhr.status === 200){
                     
@@ -156,8 +157,9 @@
                 '&flowCold=' + encodeURIComponent(userFlowCold)+
                 '&pressureCold=' + encodeURIComponent(userPressureCold)+
 
-                '&wetAir=' + encodeURIComponent(userWetAir)+
-                '&dryAir=' + encodeURIComponent(userDryAir)+
+                '&selectTypeColdCoolant=' + encodeURIComponent(userSelectTypeColdCoolant)+
+                // '&wetAir=' + encodeURIComponent(userWetAir)+
+                // '&dryAir=' + encodeURIComponent(userDryAir)+
 
                 '&csrfmiddlewaretoken=' + encodeURIComponent(csrf_token);
 

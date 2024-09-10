@@ -1,12 +1,14 @@
 import math
 from iapws import IAPWS97
-import CoolProp
 import CoolProp.CoolProp as CP
 
 def calcCoolantProperty (tempHotIn, tempHotOut, pressureHot,
-                        tempColdIn, tempColdOut, pressureCold,):
+                        tempColdIn, tempColdOut, pressureCold, selectTypeColdCoolant, wetAir):
     tempHotIn = tempHotIn +273.15
-    densityHotCoolant = CP.PropsSI("D", "T", tempHotIn, "P", pressureHot, "Air")
+    if selectTypeColdCoolant == wetAir:
+        densityHotCoolant = IAPWS97(T = tempHotIn, x = 0.5)
+    else:
+        densityHotCoolant = CP.PropsSI("D", "T", tempHotIn, "P", pressureHot, selectTypeColdCoolant)
     return densityHotCoolant
 # def calcThermDiffusivity(thermConductivity, substanceDensity, heatCapacity):
 #     thermDiffusivity = thermConductivity/(substanceDensity*heatCapacity*10**3)
