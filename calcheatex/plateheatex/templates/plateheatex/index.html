@@ -23,7 +23,7 @@
                         <select name="selectTypeHotCoolant" class="selectTypeHotCoolant" >
                             <option value="Water">Вода</option>
                             <option value="Air">Воздух</option>
-                            <!-- <option value="wetAir">Влажный воздух</option> -->
+                            <option value="humidAir">Влажный воздух</option>
                             <option value="Ethylene">Этилен</option>
                             <option value="Propylene">Пропилен</option>
                         </select>
@@ -42,7 +42,7 @@
                         <select name="selectTypeColdCoolant" class="selectTypeColdCoolant">
                             <option value="Water">Вода</option>
                             <option value="Air">Воздух</option>
-                            <option value="wetAir">Влажный воздух</option>
+                            <option value="humidAir">Влажный воздух</option>
                             <option value="Ethylene">Этилен</option>
                             <option value="Propylene">Пропилен</option>
                         </select>
@@ -53,50 +53,21 @@
             <table class='form_table' id="form_table">
                 <tr>
                     <td>
-                        <h3 id ='resultDensityHotCoolant'></h3>
+                        <h3 id ='resultHotDensity'></h3>
                     </td>
-                </tr>
-                <tr>
-                    <!-- <td>
-                        <h3 id ='resultPartialPressure'></h3>
-                    </td> -->
+                    <td>
+                        <h3 id ='resultColdDensity'></h3>
+                    </td>
                 </tr>
             </table>
         </form>
     </div>
-    <!-- <div id="table-container"></div> -->
     <script>
-        // function createTable(resultObjParse) {
-        // let tableContainer = document.getElementById('table-container');
-        // let table = document.createElement('table');
-
-        // // Создание заголовков таблицы
-        // let headerRow = table.insertRow();
-        // for (let key in resultObjParse[0]) {
-        //     let headerCell = headerRow.insertCell();
-        //     headerCell.textContent = key;
-        // }
-
-        // Создание строк и ячеек таблицы
-        // resultObjParse.forEach(item => {
-        // let row = table.insertRow();
-        // for (let key in item) {
-        //     let cell = row.insertCell();
-        //     cell.textContent = item[key];
-        //     }
-        // });
-        // tableContainer.appendChild(table);
-        // // Вызов функции для создания таблицы после получения данных 
-        // }
         document.forms.calcheatex.onsubmit = function(event){
             event.preventDefault();
             
             var csrf_token = document.forms.calcheatex.csrfmiddlewaretoken.value;
 
-            // var userThermConductivity = document.forms.calcheatex.thermConductivity.value;
-            // var userSubstanceDensity = document.forms.calcheatex.substanceDensity.value;
-            // var userHeatCapacity = document.forms.calcheatex.heatCapacity.value;
-            // var userInputTemperature = document.forms.calcheatex.inputTemperature.value;
             var userTempHotIn = document.forms.calcheatex.tempHotIn.value;
             var userTempHotOut = document.forms.calcheatex.tempHotOut.value;
             var userFlowHot = document.forms.calcheatex.flowHot.value;
@@ -107,32 +78,26 @@
             var userFlowCold = document.forms.calcheatex.flowCold.value;
             var userPressureCold = document.forms.calcheatex.pressureCold.value;
 
-            var userSelectTypeColdCoolant = document.forms.calcheatex.selectTypeColdCoolant.value;//проверка
-            //var userDryAir = document.forms.calcheatex.dryAir;
+            var userSelectTypeColdCoolant = document.forms.calcheatex.selectTypeColdCoolant.value;
+            var userSelectTypeHotCoolant = document.forms.calcheatex.selectTypeHotCoolant.value;
 
             var xhr = new XMLHttpRequest();
 
-            xhr.open('POST', '/calculation');
+            xhr.open('POST', '/calculation', async);
 
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
             xhr.onreadystatechange = function(){
                 
                 if(xhr.readyState === 4 && xhr.status === 200){
-                    
-                    // var resultThermDiffusivity = document.querySelector('#resultThermDiffusivity');
-                    // var resultPartialPressure = document.querySelector('#resultPartialPressure');
-                    var resultDensityHotCoolant = document.querySelector('#resultDensityHotCoolant');
+                    var resultHotDensity = document.querySelector('#resultHotDensity');
+                    var resultColdDensity = document.querySelector('#resultColdDensity');
                     var resultObjParse = JSON.parse(xhr.responseText);
                     
-                    resultDensityHotCoolant.textContent = 'Плотность горячего теплоносителя = ' 
-                    + resultObjParse.resultDensityHotCoolant;
-
-                    // resultThermDiffusivity.textContent = 'Температуропроводность = ' 
-                    // + resultObjParse.resultThermDiffusivity;
-
-                    // resultPartialPressure.textContent = 'Парциальное давление = ' 
-                    // + resultObjParse.resultPartialPressure;
+                    resultHotDensity.textContent = 'Плотность по горячему = ' 
+                    + resultObjParse.resultHotDensity;
+                    resultColdDensity.textContent = 'Плотность по холодному = ' 
+                    + resultObjParse.resultColdDensity;
                 
                     if (resultObjParse) {
                     document.getElementById("form_table").style.display = "table"; // Отобразить таблицу
@@ -143,10 +108,6 @@
             }
             
             var body = 
-                // 'thermConductivity=' + encodeURIComponent(userThermConductivity) +
-                // '&substanceDensity=' + encodeURIComponent(userSubstanceDensity)+
-                // '&heatCapacity=' + encodeURIComponent(userHeatCapacity)+
-                // '&inputTemperature=' + encodeURIComponent(userInputTemperature)+
                 '&tempHotIn=' + encodeURIComponent(userTempHotIn) +
                 '&tempHotOut=' + encodeURIComponent(userTempHotOut)+
                 '&flowHot=' + encodeURIComponent(userFlowHot)+
@@ -158,13 +119,11 @@
                 '&pressureCold=' + encodeURIComponent(userPressureCold)+
 
                 '&selectTypeColdCoolant=' + encodeURIComponent(userSelectTypeColdCoolant)+
-                // '&wetAir=' + encodeURIComponent(userWetAir)+
-                // '&dryAir=' + encodeURIComponent(userDryAir)+
+                '&selectTypeHotCoolant=' + encodeURIComponent(userSelectTypeHotCoolant)+
 
                 '&csrfmiddlewaretoken=' + encodeURIComponent(csrf_token);
 
             xhr.send(body);
-            // createTable(resultObjParse);
         }
     </script>
 </body>

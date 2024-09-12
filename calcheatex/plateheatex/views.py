@@ -19,14 +19,16 @@ def calc(request):
         flowCold = float(request.POST.get('flowCold', 0))
         pressureCold = float(request.POST.get('pressureCold', 0))
         
-        wetAir = str(request.POST.get('wetAir'))
         selectTypeColdCoolant = str(request.POST.get('selectTypeColdCoolant'))
+        selectTypeHotCoolant = str(request.POST.get('selectTypeHotCoolant'))
 
-        resultDensityHotCoolant = calcCoolantProperty(tempHotIn, tempHotOut, pressureHot, tempColdIn, tempColdOut, pressureCold, selectTypeColdCoolant, wetAir)
+        resultHotDensity = hotDensity(tempHotIn, tempHotOut, pressureHot, selectTypeHotCoolant)
+        resultColdDensity = coldDensity(tempColdIn, tempColdOut, pressureCold, selectTypeColdCoolant)
 
         # resultPartialPressure = calcPartialPressure(inputTemperature)
 
-        return JsonResponse({'resultDensityHotCoolant' : resultDensityHotCoolant,
+        return JsonResponse({'resultHotDensity' : resultHotDensity,
+                             'resultColdDensity' : resultColdDensity,
                         #       'resultPartialPressure' : resultPartialPressure
                         })
 
