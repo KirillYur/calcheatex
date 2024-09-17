@@ -20,7 +20,7 @@ body{
 	display: flex;
 	text-align: center;
 	justify-content: center;
-	margin: 80px 10px 42px 10px;
+	margin: 80px 10px 40px 10px;
 	font-weight: bold;
 	font-family: "Manrope", "Roboto", sans-serif;
 	font-size: 35px;
@@ -72,7 +72,6 @@ body{
 	width: 260px;
 	padding: 10px;
 	border: 2px solid rgb(163, 163, 163);
-	/* margin-bottom: 10px; */
 	border-radius: 8px;
 	transition: 0.3s;
 }
@@ -111,7 +110,8 @@ body{
 	border-collapse: collapse;
     border-radius: 20px;
     box-shadow: 0 0 0px 3px #666666;
-	margin-bottom: 100px;
+	margin-top: 40px;
+	margin-bottom: 40px;
 	background-color: aliceblue;
 }
 .tableData{
@@ -129,7 +129,6 @@ body{
 	background-color: #4b8c61;
 	border-radius: 8px;
 	transition: 0.3s;
-	margin-bottom: 10px;
 	width: 240px;
 	padding: 10px;
 	font-family: "Manrope", "Roboto", sans-serif;
