@@ -17,10 +17,10 @@
                     <span class="spanHotCoolant">Горячий теплоноситель</span>
                     <p><input name="tempHotIn" type="text" class="form_input" placeholder="t1 на входе, °C"></p>
                     <p><input name="tempHotOut" type="text" class="form_input" placeholder="t1 на выходе, °C"></p>
-                    <p><input name="flowHot" type="text" class="form_input" placeholder="Расход горячего теплоносителя, м3/ч"></p>
-                    <p><input name="pressureHot" type="text" class="form_input" placeholder="Давление горячего теплоносителя, бар"></p>
+                    <p><input name="flowHot" type="text" class="form_input" placeholder="Расход горячего теплоносителя, м³/ч"></p>
+                    <p><input name="pressureHot" type="text" class="form_input" placeholder="Давление горячего теплоносителя, Па"></p>
                     <p>
-                        <select name="selectTypeHotCoolant" class="selectTypeHotCoolant" >
+                        <select name="selectTypeHotCoolant" id="selectTypeHotCoolant" class="selectTypeHotCoolant" onchange="toggleInputHumidity()">
                             <option value="Water">Вода</option>
                             <option value="Air">Воздух</option>
                             <option value="humidAir">Влажный воздух</option>
@@ -28,18 +28,21 @@
                             <option value="Propylene">Пропилен</option>
                         </select>
                     </p>
+                    <div id="inputHotHumidity" style="display: none">
+                        <input type="text" name="hotHumidity" id="inputHumidity" class="inputHumidity" placeholder="Относительная влажность, %">
+                    </div>
                 </div>
                 <div class="inputAreaCenter">
-                    <img src="static/teplo_calc_center.jpg" alt="" width="240" height="200">
+                    <img src="static/tmpu.png" alt="" width="300" height="300">
                 </div>
                 <div class='inputColdArea'>
                     <span class="spanColdCoolant">Холодный теплоноситель</span>
                     <p><input name="tempColdIn" type="text" class="form_input" placeholder="t2 на входе, °C"></p>
                     <p><input name="tempColdOut" type="text" class="form_input" placeholder="t2 на выходе, °C"></p>
-                    <p><input name="flowCold" type="text" class="form_input" placeholder="Расход холодного теплоносителя, м3/ч"></p>
-                    <p><input name="pressureCold" type="text" class="form_input" placeholder="Давление холодного теплоносителя, бар"></p>
+                    <p><input name="flowCold" type="text" class="form_input" placeholder="Расход холодного теплоносителя, м³/ч"></p>
+                    <p><input name="pressureCold" type="text" class="form_input" placeholder="Давление холодного теплоносителя, Па"></p>
                     <p>
-                        <select name="selectTypeColdCoolant" class="selectTypeColdCoolant">
+                        <select name="selectTypeColdCoolant" id="selectTypeColdCoolant" class="selectTypeColdCoolant" onchange="toggleInputHumidity()">
                             <option value="Water">Вода</option>
                             <option value="Air">Воздух</option>
                             <option value="humidAir">Влажный воздух</option>
@@ -47,17 +50,44 @@
                             <option value="Propylene">Пропилен</option>
                         </select>
                     </p>
+                    <div id="inputColdHumidity" style="display: none">
+                        <input type="text" name="coldHumidity" id="inputHumidity" class="inputHumidity" placeholder="Относительная влажность, %">
+                    </div>
                 </div>
             </div>
             <p><button class='calcheatexBtn' type='submit' name='calcheatexBtn'>Рассчитать</button></p>
             <table class='form_table' id="form_table">
                 <tr>
-                    <td>
-                        <h3 id ='resultHotDensity'></h3>
-                    </td>
-                    <td>
-                        <h3 id ='resultColdDensity'></h3>
-                    </td>
+                    <th><h3>Горячий теплоноситель</h3></th>
+                    <th><h3>Холодный теплоноситель</h3></th>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='densityHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='densityColdCoolant'></h3></td>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='dynamicViscosityHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='dynamicViscosityColdCoolant'></h3></td>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='kinematicViscosityHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='kinematicViscosityColdCoolant'></h3></td>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='prandtlHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='prandtlColdCoolant'></h3></td>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='conductivityHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='conductivityColdCoolant'></h3></td>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='heatCapacityHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='heatCapacityColdCoolant'></h3></td>
+                </tr>
+                <tr>
+                    <td><h3 class ='tableData' id ='thermDiffusivityHotCoolant'></h3></td>
+                    <td><h3 class ='tableData' id ='thermDiffusivityColdCoolant'></h3></td>
                 </tr>
             </table>
         </form>
@@ -66,38 +96,70 @@
         document.forms.calcheatex.onsubmit = function(event){
             event.preventDefault();
             
-            var csrf_token = document.forms.calcheatex.csrfmiddlewaretoken.value;
+            let csrf_token = document.forms.calcheatex.csrfmiddlewaretoken.value;
 
-            var userTempHotIn = document.forms.calcheatex.tempHotIn.value;
-            var userTempHotOut = document.forms.calcheatex.tempHotOut.value;
-            var userFlowHot = document.forms.calcheatex.flowHot.value;
-            var userPressureHot = document.forms.calcheatex.pressureHot.value;
+            let userTempHotIn = document.forms.calcheatex.tempHotIn.value;
+            let userTempHotOut = document.forms.calcheatex.tempHotOut.value;
+            let userFlowHot = document.forms.calcheatex.flowHot.value;
+            let userPressureHot = document.forms.calcheatex.pressureHot.value;
+            let userHotHumidity = document.forms.calcheatex.hotHumidity.value;
 
-            var userTempColdIn = document.forms.calcheatex.tempColdIn.value;
-            var userTempColdOut = document.forms.calcheatex.tempColdOut.value;
-            var userFlowCold = document.forms.calcheatex.flowCold.value;
-            var userPressureCold = document.forms.calcheatex.pressureCold.value;
+            let userTempColdIn = document.forms.calcheatex.tempColdIn.value;
+            let userTempColdOut = document.forms.calcheatex.tempColdOut.value;
+            let userFlowCold = document.forms.calcheatex.flowCold.value;
+            let userPressureCold = document.forms.calcheatex.pressureCold.value;
+            let userColdHumidity = document.forms.calcheatex.coldHumidity.value;
 
-            var userSelectTypeColdCoolant = document.forms.calcheatex.selectTypeColdCoolant.value;
-            var userSelectTypeHotCoolant = document.forms.calcheatex.selectTypeHotCoolant.value;
+            let userSelectTypeColdCoolant = document.forms.calcheatex.selectTypeColdCoolant.value;
+            let userSelectTypeHotCoolant = document.forms.calcheatex.selectTypeHotCoolant.value;
 
-            var xhr = new XMLHttpRequest();
+            let xhr = new XMLHttpRequest();
 
-            xhr.open('POST', '/calculation', async);
+            xhr.open('POST', '/calculation');
 
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
             xhr.onreadystatechange = function(){
                 
                 if(xhr.readyState === 4 && xhr.status === 200){
-                    var resultHotDensity = document.querySelector('#resultHotDensity');
-                    var resultColdDensity = document.querySelector('#resultColdDensity');
-                    var resultObjParse = JSON.parse(xhr.responseText);
-                    
-                    resultHotDensity.textContent = 'Плотность по горячему = ' 
-                    + resultObjParse.resultHotDensity;
-                    resultColdDensity.textContent = 'Плотность по холодному = ' 
-                    + resultObjParse.resultColdDensity;
+                    let resultObjParse = JSON.parse(xhr.responseText);
+                    let coolantProps = resultObjParse.propertiesCoolants;
+
+                    densityHotCoolant.textContent = 'ρ, кг/м³ = '
+                    + coolantProps.densityHotCoolant;
+                    dynamicViscosityHotCoolant.textContent = 'μ, Па⋅с = ' 
+                    + coolantProps.dynamicViscosityHotCoolant;
+                    kinematicViscosityHotCoolant.textContent = 'ν, м²/с = ' 
+                    + coolantProps.kinematicViscosityHotCoolant;
+                    prandtlHotCoolant.textContent = 'Pr = ' 
+                    + coolantProps.prandtlHotCoolant;
+                    conductivityHotCoolant.textContent = 'λ, Вт/(м⋅К) = ' 
+                    + coolantProps.conductivityHotCoolant;
+                    heatCapacityHotCoolant.textContent = 'Cp, Дж/(кг⋅К) = ' 
+                    + coolantProps.heatCapacityHotCoolant;
+                    thermDiffusivityHotCoolant.textContent = 'a, м²/с = ' 
+                    + coolantProps.thermDiffusivityHotCoolant;
+
+                    densityColdCoolant.textContent = 'ρ, кг/м³ = ' 
+                    + coolantProps.densityColdCoolant;
+                    dynamicViscosityColdCoolant.textContent = 'μ, Па⋅с = ' 
+                    + coolantProps.dynamicViscosityColdCoolant;
+                    kinematicViscosityColdCoolant.textContent = 'ν, м²/с = ' 
+                    + coolantProps.kinematicViscosityColdCoolant;
+                    prandtlColdCoolant.textContent = 'Pr = ' 
+                    + coolantProps.prandtlColdCoolant;
+                    conductivityColdCoolant.textContent = 'λ, Вт/(м⋅К) = ' 
+                    + coolantProps.conductivityColdCoolant;
+                    heatCapacityColdCoolant.textContent = 'Cp, Дж/(кг⋅К) = ' 
+                    + coolantProps.heatCapacityColdCoolant;
+                    thermDiffusivityColdCoolant.textContent = 'a, м²/с = ' 
+                    + coolantProps.thermDiffusivityColdCoolant;
+
+                    //Подумать мб норм
+                    // if (resultObjParse.densityColdCoolant) {
+                    //     densityColdCoolant.textContent = 'Свойства теплоносителей = ' + resultObjParse.densityColdCoolant;
+                    // }
+
                 
                     if (resultObjParse) {
                     document.getElementById("form_table").style.display = "table"; // Отобразить таблицу
@@ -107,16 +169,18 @@
                 }
             }
             
-            var body = 
+            let body = 
                 '&tempHotIn=' + encodeURIComponent(userTempHotIn) +
                 '&tempHotOut=' + encodeURIComponent(userTempHotOut)+
                 '&flowHot=' + encodeURIComponent(userFlowHot)+
                 '&pressureHot=' + encodeURIComponent(userPressureHot)+
+                '&hotHumidity=' + encodeURIComponent(userHotHumidity)+
 
                 '&tempColdIn=' + encodeURIComponent(userTempColdIn) +
                 '&tempColdOut=' + encodeURIComponent(userTempColdOut)+
                 '&flowCold=' + encodeURIComponent(userFlowCold)+
                 '&pressureCold=' + encodeURIComponent(userPressureCold)+
+                '&coldHumidity=' + encodeURIComponent(userColdHumidity)+
 
                 '&selectTypeColdCoolant=' + encodeURIComponent(userSelectTypeColdCoolant)+
                 '&selectTypeHotCoolant=' + encodeURIComponent(userSelectTypeHotCoolant)+
@@ -124,6 +188,23 @@
                 '&csrfmiddlewaretoken=' + encodeURIComponent(csrf_token);
 
             xhr.send(body);
+        }
+        function toggleInputHumidity() {
+            const selectColdElement = document.getElementById('selectTypeColdCoolant');
+            const inputColdHumidity = document.getElementById('inputColdHumidity');
+            const selectHotElement = document.getElementById('selectTypeHotCoolant');
+            const inputHotHumidity = document.getElementById('inputHotHumidity');
+            
+            if (selectColdElement.value === 'humidAir') {
+                inputColdHumidity.style.display = 'block'; // Показываем поле input
+            } else {
+                inputColdHumidity.style.display = 'none'; // Скрываем поле input
+            }
+            if (selectHotElement.value === 'humidAir') {
+                inputHotHumidity.style.display = 'block'; // Показываем поле input
+            } else {
+                inputHotHumidity.style.display = 'none'; // Скрываем поле input
+            }
         }
     </script>
 </body>

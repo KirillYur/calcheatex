@@ -1,12 +1,14 @@
 body{
+	/* overflow-y: scroll; */
 	display:flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
-	height: 50vh;
-	background-image: url("bg.jpg");
-	background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(bg.jpg);
-	
+	/* height: 50vw;
+	width: 100vw; */
+	background-image: url("background.jpg");
+	background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url(background.jpg);
+	background-size: 110%;
 }
 
 .mainPageCalc{
@@ -18,20 +20,22 @@ body{
 	display: flex;
 	text-align: center;
 	justify-content: center;
-	margin: 150px 10px 42px 10px;
+	margin: 80px 10px 42px 10px;
 	font-weight: bold;
-	font: 30px "Fira Sans", sans-serif;
+	font-family: "Manrope", "Roboto", sans-serif;
+	font-size: 35px;
 }
 
 .spanHotCoolant{
 	display: inline-flex;
     border: solid;
-	border-color: rgb(255, 87, 87);
-	background-color: rgb(255, 87, 87);
+	font-family: "Manrope", "Roboto", sans-serif;
+    font-size: 20px;
+	border-color: #c10831;
+	background-color: #c10831;
 	width: 260px;
 	padding: 8px;
 	border-radius: 10px;
-	font: 20px "Fira Sans", sans-serif;
 	justify-content: center;
 	color: rgb(255, 255, 255);
 }
@@ -39,12 +43,13 @@ body{
 .spanColdCoolant{
 	display: inline-flex;
     border: solid;
-	border-color: rgb(72, 69, 255);
-	background-color: rgb(72, 69, 255);
+	font-family: "Manrope", "Roboto", sans-serif;
+    font-size: 20px;
+	border-color: #004077;
+	background-color: #004077;
 	width: 260px;
 	padding: 8px;
 	border-radius: 10px;
-	font: 20px "Fira Sans", sans-serif;
 	justify-content: center;
 	color: rgb(255, 255, 255);
 }
@@ -55,10 +60,15 @@ body{
 	justify-content: center;
 	align-items: center;
 }
+.inputAreaCenter{
+	display: flex;
+	padding: 30px;
+}
 
 .form_input {
 	display: flex;
 	flex-direction: row;
+	font-family: "Manrope", "Roboto", sans-serif;
 	width: 260px;
 	padding: 10px;
 	border: 2px solid rgb(163, 163, 163);
@@ -68,29 +78,46 @@ body{
 }
 .selectTypeHotCoolant{
 	display: flex;
+	font-family: "Manrope", "Roboto", sans-serif;
 	border-radius: 8px;
 	width: 100%;
-	padding: 5px;
+	padding: 10px;
+	border: 2px solid rgb(163, 163, 163);
 	justify-content: center;
 }
-
 .selectTypeColdCoolant{
 	display: flex;
+	font-family: "Manrope", "Roboto", sans-serif;
 	border-radius: 8px;
 	width: 100%;
-	padding: 5px;
+	padding: 10px;
+	border: 2px solid rgb(163, 163, 163);
+	justify-content: center
 }
-
+.inputHumidity{
+	display: flex;
+	font-family: "Manrope", "Roboto", sans-serif;
+	border-radius: 8px;
+	width: 260px;
+	padding: 10px;
+	border: 2px solid rgb(163, 163, 163);
+	justify-content: center;
+}
 .form_table{
 	display: none;
   	flex-direction: row;
+	font-family: "Cambria", sans-serif;
   	width: 100%;
-	justify-content: center;
 	border-collapse: collapse;
     border-radius: 20px;
-    border-style: hidden;
-    box-shadow: 0 0 3px 4px #186b1f;
-	margin-bottom: 20px;
+    box-shadow: 0 0 0px 3px #666666;
+	margin-bottom: 100px;
+	background-color: aliceblue;
+}
+.tableData{
+	display: flex;
+  	align-items: center;
+	justify-content: center;
 }
 
 .calcheatexBtn {
@@ -98,19 +125,20 @@ body{
   	align-items: center;
 	justify-content: center;
 	border: solid;
-	border-color: #56ff64;
-	background-color: #56ff64;
+	border-color: #4b8c61;
+	background-color: #4b8c61;
 	border-radius: 8px;
 	transition: 0.3s;
 	margin-bottom: 10px;
 	width: 240px;
 	padding: 10px;
-	font: 20px "Fira Sans", sans-serif;
+	font-family: "Manrope", "Roboto", sans-serif;
+	font-size: 20px;
 	margin: 0 auto;
 }
 .calcheatexBtn:hover {
-	background-color: #4ab453;
-	border-color: #4ab453;;
-	color: #000;
+	background-color: #376446;
+	border-color: #376446;;
+	color: #ffffff;
 }
 
