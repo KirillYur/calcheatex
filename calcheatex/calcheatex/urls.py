@@ -21,6 +21,7 @@ from plateheatex.views import page_not_found
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('user/', include('users.urls', namespace='user')),
     path('', include('plateheatex.urls')),
 ]
 

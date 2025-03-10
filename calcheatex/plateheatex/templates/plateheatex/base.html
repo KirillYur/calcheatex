@@ -1,17 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Расчет пластинчатого теплообменника</title>
     <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link rel="shortcut icon" href="static/icon.ico" />
     {% load static %}
 </head>
 <body>
+    {% csrf_token %}
     <div class="mainPageCalc">
         <form name = 'calcheatex'>
+            <nav class="navbar">
+                <div class="container">
+                    <a class="navbar-home" href="{% url 'base' %}">
+                        <svg class="navbar-home" height="38px" width="38px"
+                            preserveAspectRatio="xMidYMid" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                            <path class="navbar-home" d="M434.162,293.382V493.862H308.321V368.583H203.682V493.862H77.841V293.382L256,153.862Z"/>
+                            <path class="navbar-home" d="M0,242.682L256,38.93L512,242.682L482.21,285.764L256,105.722L29.79,285.764Z"/>
+                            <path class="navbar-home" d="M439.853,18.138V148.538L376.573,98.138V18.138Z"/>
+                        </svg>
+                    </a>
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown ">
+                                <a class="navbar-info" href="{% url 'base' %}" role="button">
+                                    <svg class="navbar-info" xmlns="http://www.w3.org/2000/svg" width="38px" height="38px" 
+                                    preserveAspectRatio="xMidYMid" viewBox="0 0 24 24">
+                                        <path class="navbar-info" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001
+                                        5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001
+                                        12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0
+                                        .535.517.558 1 .735v.999z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            {% if not user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="navbar-profile" href="{% url 'user:login' %}">
+                                        <svg class="navbar-profile" height="38px" width="38px"
+                                            preserveAspectRatio="xMidYMid" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="navbar-profile" d="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765c12.574,0,22.766-10.192,22.766-22.765
+                                            S35.34,0.001,22.766,0.001z M22.766,6.808c4.16,0,7.531,3.372,7.531,7.53c0,4.159-3.371,7.53-7.531,7.53
+                                            c-4.158,0-7.529-3.371-7.529-7.53C15.237,10.18,18.608,6.808,22.766,6.808z M22.761,39.579c-4.149,0-7.949-1.511-10.88-4.012
+                                            c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592
+                                            c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z"/>
+                                        </svg>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="navbar-profile" href="{% url 'user:login' %}" role="button">
+                                            <svg class="navbar-profile" height="38px" width="38px"
+                                            preserveAspectRatio="xMidYMid" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="navbar-profile" d="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765c12.574,0,22.766-10.192,22.766-22.765
+                                            S35.34,0.001,22.766,0.001z M22.766,6.808c4.16,0,7.531,3.372,7.531,7.53c0,4.159-3.371,7.53-7.531,7.53
+                                            c-4.158,0-7.529-3.371-7.529-7.53C15.237,10.18,18.608,6.808,22.766,6.808z M22.761,39.579c-4.149,0-7.949-1.511-10.88-4.012
+                                            c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592
+                                            c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z"/>
+                                        </svg>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'user:profile' %}">Личный кабинет</a>
+                                        </li>
+                                        {% if user.is_admin or user.is_staff %}
+                                            <li><a class="dropdown-item" href="{% url 'admin:index' %}">Админ панель</a></li>
+                                        {% endif %}
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="{% url 'user:logout' %}">Выйти</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                </div>
+            </nav>
             <h1 class = "form_title">Расчет пластинчатого теплообменника</h1>
-            {% csrf_token %}
             <div class="inputMainArea">
                 <div class = 'inputHotArea'>
                     <span class="spanHotCoolant">Горячий теплоноситель</span>
@@ -154,8 +218,7 @@
                     + coolantProps.heatCapacityColdCoolant;
                     thermDiffusivityColdCoolant.textContent = 'a, м²/с = ' 
                     + coolantProps.thermDiffusivityColdCoolant;
-
-                    //Подумать мб норм
+                    
                     // if (resultObjParse.densityColdCoolant) {
                     //     densityColdCoolant.textContent = 'Свойства теплоносителей = ' + resultObjParse.densityColdCoolant;
                     // }

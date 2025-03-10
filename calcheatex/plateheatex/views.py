@@ -3,9 +3,9 @@ from django.shortcuts import render
 from .calculations import *
 from django.http import JsonResponse
 
-def index(request):
+def base(request):
 
-        return render(request, 'plateheatex/index.html', {'total_result': 0})
+        return render(request, 'plateheatex/base.html', {'total_result': 0})
 
 def calc(request):
 
@@ -43,8 +43,8 @@ def calc(request):
         else:
                 coldHumidity = float(coldHumidity)
 
-        densityColdCoolant, dynamicViscosityColdCoolant, kinematicViscosityColdCoolant, prandtlColdCoolant, conductivityColdCoolant, heatCapacityColdCoolant, thermDiffusivityColdCoolant = hotPropertiesCoolant(tempHotIn, tempHotOut, pressureHot, hotHumidity, selectTypeHotCoolant)
-        densityHotCoolant, dynamicViscosityHotCoolant, kinematicViscosityHotCoolant, prandtlHotCoolant, conductivityHotCoolant, heatCapacityHotCoolant, thermDiffusivityHotCoolant = coldPropertiesCoolant(tempColdIn, tempColdOut, pressureCold, coldHumidity, selectTypeColdCoolant)
+        densityColdCoolant, dynamicViscosityColdCoolant, kinematicViscosityColdCoolant, prandtlColdCoolant, conductivityColdCoolant, heatCapacityColdCoolant, thermDiffusivityColdCoolant = coldPropertiesCoolant(tempColdIn, tempColdOut, pressureCold, coldHumidity, selectTypeColdCoolant)
+        densityHotCoolant, dynamicViscosityHotCoolant, kinematicViscosityHotCoolant, prandtlHotCoolant, conductivityHotCoolant, heatCapacityHotCoolant, thermDiffusivityHotCoolant = hotPropertiesCoolant(tempHotIn, tempHotOut, pressureHot, hotHumidity, selectTypeHotCoolant)
         
         propertiesCoolants = {
         'densityColdCoolant': round(densityColdCoolant, 3),

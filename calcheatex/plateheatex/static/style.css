@@ -1,19 +1,20 @@
 body{
-	/* overflow-y: scroll; */
-	display:flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: row;
-	/* height: 50vw;
-	width: 100vw; */
-	background-image: url("background.jpg");
-	background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url(background.jpg);
-	background-size: 110%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url("background.jpg");
+    background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url(background.jpg);
+    background-size: 110%;
 }
 
+
 .mainPageCalc{
-	display: flex;
-	flex-direction: row;
+	display:block;
+	justify-content: center;
+	align-items: center;
 }
 
 .form_title{
@@ -140,4 +141,88 @@ body{
 	border-color: #376446;;
 	color: #ffffff;
 }
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Manrope", "Roboto", sans-serif;
+}
+
+.navbar {
+    background-color: #2c3e50;
+    padding: 10px 0px;
+    width: 100%;
+}
+
+.navbar-home {
+    fill: #ffffff;
+    text-decoration: none;
+	padding: 4px 4px;
+	transition: background-color 0.3s ease;
+	display: flex;
+}
+
+.navbar-home:hover {
+    background-color: #34495e;
+    border-radius: 4px;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+	text-align: center;
+}
+
+.nav-item {
+    position: relative;
+    margin-right: 15px;
+}
+
+.navbar-profile {
+    fill: #ffffff;
+    text-decoration: none;
+	padding: 4px 4px;
+	transition: background-color 0.3s ease;
+	display: block;
+}
+.navbar-profile:hover {
+    background-color: #34495e;
+    border-radius: 4px;
+}
+
+.navbar-info {
+    fill: #ffffff;
+    text-decoration: none;
+	padding: 4px 4px;
+	transition: background-color 0.3s ease;
+	display: block;
+}
+
+.navbar-info:hover {
+    background-color: #34495e;
+    border-radius: 4px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2c3e50;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
 

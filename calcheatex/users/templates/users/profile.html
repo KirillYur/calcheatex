@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'login.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Мой профиль</title>
+</head>
+<body>
+    <section class="profile">
+        <div class="profile-title">
+            <h2>Мой профиль</h2>
+        </div>
+        {% include "users/includes/notifications.html" %}
+        <form class="profile-form" action="{% url 'user:profile' %}" method="POST">
+        {% csrf_token %}
+        <div class="profile-content">
+            <div class="profile-photo">
+                {% if user.image %}
+                    <img src="{{ user.image.url }}"
+                        alt="Аватар пользователя" class="img-fluid rounded-circle"
+                        style="max-width: 150px;">
+                {% else %}
+                    <img src="{% static 'static/baseavatar.png' %}"
+                        alt="Аватар пользователя" class="img-fluid rounded-circle"
+                        style="max-width: 150px;">
+                {% endif %}
+                    <input type="file" class="edit-photo-btn" id="id_image"
+                            name='image'
+                            accept="image/*">
+                {% if form.image.errors %}
+                    <div class="error-notification">
+                        {{form.image.errors}}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="info-group">
+                    <label for="id_username">Имя пользователя:</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="id_username" value="{{ user.username }}" readonly>
+                    </div>
+                </div>
+                <div class="info-group">
+                    <label for="id_email">Электронная почта:</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="id_email" value="{{ user.email }}" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-dark">Сохранить</button>
+        </form>
+        <div class="profile-actions">
+            <a href="{% url 'user:logout' %}" class="logout-btn">Выйти</a>
+        </div>
+    </section>
+</body>
+</html>

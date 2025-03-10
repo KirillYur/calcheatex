@@ -1,0 +1,214 @@
+/* Общие стили для всех страниц */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #004077, #2575fc);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Стили для контейнера форм и профиля */
+.login, .profile {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.profile {
+    max-width: 600px; /* Профиль шире, чтобы вместить больше информации */
+}
+
+/* Заголовок */
+.login-title h2, .profile-title h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Формы */
+.login-form, .profile-form, .registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Группы полей ввода */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group:hover {
+    border-color: #004077;
+}
+
+.input-group:focus-within {
+    border-color: #004077;
+    box-shadow: 0 0 8px rgba(0, 64, 119, 0.3);
+}
+
+.input-group i {
+    margin-right: 10px;
+    color: #004077;
+    font-size: 18px;
+}
+
+.input-group input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: #999;
+}
+
+/* Кнопки */
+.login-btn, .edit-profile-btn, .edit-photo-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #004077, #2575fc);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-btn:hover, .edit-profile-btn:hover, .edit-photo-btn:hover {
+    background: linear-gradient(135deg, #2575fc, #004077);
+    transform: scale(1.02);
+}
+
+.login-btn:active, .edit-profile-btn:active, .edit-photo-btn:active {
+    transform: scale(0.98);
+}
+
+.edit-photo-btn {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Ссылки */
+.reset-pass, .profile-actions {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.reset-pass a, .logout-btn {
+    color: #004077;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.reset-pass a:hover, .logout-btn:hover {
+    text-decoration: underline;
+}
+
+/* Фото профиля */
+.profile-photo {
+    text-align: center;
+}
+
+.profile-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #004077;
+    margin-bottom: 15px;
+}
+
+/* Группы информации в профиле */
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-group label {
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+}
+
+/* Уведомления об ошибках */
+.error-notification {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    color: #5a0202;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+    animation: fadeIn 0.5s ease;
+}
+
+.error-notification i {
+    color: #d32f2f;
+    font-size: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .login, .profile {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .login-title h2, .profile-title h2 {
+        font-size: 24px;
+    }
+
+    .input-group input {
+        font-size: 14px;
+    }
+
+    .login-btn, .edit-profile-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .profile-photo img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .reset-pass, .profile-actions {
+        font-size: 12px;
+    }
+}
